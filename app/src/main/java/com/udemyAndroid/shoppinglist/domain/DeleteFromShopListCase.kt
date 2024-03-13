@@ -1,8 +1,8 @@
 package com.udemyAndroid.shoppinglist.domain
 
-class DeleteFromShopListCase {
+class DeleteFromShopListCase(private val shopListRepository: ShopListRepository) {
 
     fun deleteShopItem(shopItemId: Int) {
-        TODO()
+        shopListRepository.deleteShopItem(shopItemId)
     }
 }
