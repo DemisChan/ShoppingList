@@ -26,3 +26,5 @@ y
 Iapp/src/main/java/com/udemyAndroid/shoppinglist/domain/GetShopItemCase.kt,d/2/d2173f26538a60b02679048f3497057e04899f44
 P
  app/src/main/AndroidManifest.xml,8/c/8c55c3ccc257e5907959013f99656e4c8ec3903e
+|
+Lapp/src/main/java/com/udemyAndroid/shoppinglist/domain/ShopListRepository.kt,a/c/ace9444f36e9d06bc1e985461560d225591fdd66

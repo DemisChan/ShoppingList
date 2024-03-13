@@ -1,8 +1,8 @@
 package com.udemyAndroid.shoppinglist.domain
 
-class AddToShopListCase {
+class AddToShopListCase(private val shopListRepository: ShopListRepository) {
 
     fun addShopItem(shopItem: ShopItem) {
-        TODO()
+        shopListRepository.addShopItem(shopItem)
     }
 }
