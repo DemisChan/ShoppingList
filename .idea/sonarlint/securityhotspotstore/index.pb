@@ -8,3 +8,21 @@ o
 -.idea/sonarlint/securityhotspotstore/index.pb,8/8/88a9255124c95bdc913197c120a8d560edc59c8e
 S
 #.idea/sonarlint/issuestore/index.pb,9/f/9fe84ebb15faf917b7def6236dba604453cc61e0
+|
+Lapp/src/main/java/com/udemyAndroid/shoppinglist/presentation/MainActivity.kt,0/4/04dc03b044120b0adbfd2ff7ee69d135e3d996e6
+r
+Bapp/src/main/java/com/udemyAndroid/shoppinglist/domain/ShopItem.kt,7/d/7dadda81e40909e1f80cd12b3abc791df6c5e2a1
+y
+Iapp/src/main/java/com/udemyAndroid/shoppinglist/domain/GetShopListCase.kt,7/8/7891e59cb6acde0fb4494ea2fd96a031cdf43303
+D
+app/build.gradle.kts,d/2/d2a4383452aad84a18429a5844d31330a012a9e6
+{
+Kapp/src/main/java/com/udemyAndroid/shoppinglist/domain/AddToShopListCase.kt,f/0/f087ceb47bb741958d9a6f761459dfb882406e41
+€
+Papp/src/main/java/com/udemyAndroid/shoppinglist/domain/DeleteFromShopListCase.kt,5/4/546a8c596ee2f8858459ab62ec9f827dcc398e5f
+z
+Japp/src/main/java/com/udemyAndroid/shoppinglist/domain/EditShopListCase.kt,8/1/815518d435b84dba0cbe6637ec7bfe0f04c0290f
+y
+Iapp/src/main/java/com/udemyAndroid/shoppinglist/domain/GetShopItemCase.kt,d/2/d2173f26538a60b02679048f3497057e04899f44
+P
+ app/src/main/AndroidManifest.xml,8/c/8c55c3ccc257e5907959013f99656e4c8ec3903e
