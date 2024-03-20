@@ -4,6 +4,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 // not correct data layer should not be present her but injected
 import com.udemyAndroid.shoppinglist.data.ShopListRepositoryImpl
+import com.udemyAndroid.shoppinglist.domain.AddToShopListCase
 import com.udemyAndroid.shoppinglist.domain.DeleteFromShopListCase
 import com.udemyAndroid.shoppinglist.domain.EditShopListCase
 import com.udemyAndroid.shoppinglist.domain.GetShopListCase
@@ -16,22 +17,21 @@ class MainViewModel : ViewModel() {
     private val getShopListCase = GetShopListCase(repository)
     private val deleteShopListCase= DeleteFromShopListCase(repository)
     private val editShopListCase = EditShopListCase (repository)
+    private val addToShopListCase = AddToShopListCase(repository)
 
-    val shopList = MutableLiveData<List<ShopItem>>()
+    val shopList = getShopListCase.getShopList()
 
-    fun getShopList() {
-        val list = getShopListCase.getShopList()
-        shopList.value = list
-    }
 
     fun deleteShopList(shopItem: ShopItem) {
         deleteShopListCase.deleteShopItem(shopItem)
-        getShopList()
     }
 
     fun changeEnabledState(shopItem: ShopItem) {
         val newItem = shopItem.copy(enabled = !shopItem.enabled)
         editShopListCase.editShopItem(newItem)
-        getShopList()
+    }
+
+    fun addToShopList(shopItem: ShopItem) {
+        addToShopListCase.addShopItem(shopItem)
     }
 }

@@ -21,9 +21,9 @@ class MainActivity : AppCompatActivity() {
         viewModel.shopList.observe(this) {
             Log.d("Main Activity Test", it.toString())
         }
-        viewModel.getShopList()
-        viewModel.deleteShopList(ShopItem("Name 3", 3, true, 3))
+//        viewModel.addToShopList(ShopItem("Name 3", 3, true, 3))
 
+        viewModel.changeEnabledState(ShopItem("Name 3", 3, true, 3))
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
