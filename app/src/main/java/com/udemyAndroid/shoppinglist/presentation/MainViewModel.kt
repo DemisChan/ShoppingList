@@ -12,6 +12,7 @@ import com.udemyAndroid.shoppinglist.domain.ShopItem
 
 class MainViewModel : ViewModel() {
 
+    // not correct but works
     private val repository = ShopListRepositoryImpl
 
     private val getShopListCase = GetShopListCase(repository)
