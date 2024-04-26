@@ -2,20 +2,14 @@ package com.udemyAndroid.shoppinglist.presentation
 
 import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
-import android.widget.LinearLayout
-import android.widget.TextView
-import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.udemyAndroid.shoppinglist.R
-import com.udemyAndroid.shoppinglist.data.ShopListRepositoryImpl
-import com.udemyAndroid.shoppinglist.domain.ShopItem
-import com.udemyAndroid.shoppinglist.domain.ShopListRepository
 
 class MainActivity : AppCompatActivity() {
 
@@ -31,6 +25,12 @@ class MainActivity : AppCompatActivity() {
             Log.d("Main Activity Test", it.toString())
             shopListAdapter.submitList(it)
         }
+        val buttonAddItem = findViewById<FloatingActionButton>(R.id.button_add_shop_item)
+        buttonAddItem.setOnClickListener {
+            val intent = ShopItemActivity.newIntentAddItem(this)
+            startActivity(intent)
+        }
+
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.rv_shop_list)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
@@ -81,14 +81,15 @@ class MainActivity : AppCompatActivity() {
     private fun setUpClickListener() {
         shopListAdapter.onShopItemClickListener = {
             Log.d("Single Click Item", "$it")
+            val intent = ShopItemActivity.newIntentEditItem(this, it.id)
+            startActivity(intent)
         }
     }
 
     private fun setUpLongClickListener() {
         shopListAdapter.onShopItemLongClickListener = {
             viewModel.changeEnabledState(it)
+
         }
     }
-
-
 }
