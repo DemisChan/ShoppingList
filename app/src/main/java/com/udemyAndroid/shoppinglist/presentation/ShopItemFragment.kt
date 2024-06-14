@@ -17,7 +17,10 @@ import com.udemyAndroid.shoppinglist.R
 import com.udemyAndroid.shoppinglist.domain.ShopItem
 
 
-class ShopItemFragment : Fragment() {
+class ShopItemFragment(
+    private var screenMode:String = MODE_UNKNOWN,
+    private var shopItemId: Int = ShopItem.UNDEFINED_ID
+) : Fragment() {
 
     private lateinit var viewModel: ShopItemViewModel
 
@@ -26,9 +29,6 @@ class ShopItemFragment : Fragment() {
     private lateinit var etName: EditText
     private lateinit var etCount: EditText
     private lateinit var buttonSave: Button
-
-    private var screenMode = MODE_UNKNOWN
-    private var shopItemId = ShopItem.UNDEFINED_ID
 
 
     override fun onCreateView(
@@ -67,7 +67,7 @@ class ShopItemFragment : Fragment() {
             tilName.error = message
         }
         viewModel.shouldCloseScreen.observe(viewLifecycleOwner) {
-            finish()
+            activity?.onBackPressedDispatcher
         }
     }
 
@@ -158,6 +158,14 @@ class ShopItemFragment : Fragment() {
         private const val EDIT_MODE = "edit_mode"
         private const val ADD_MODE = "add_mode"
         private const val MODE_UNKNOWN = ""
+
+        fun newInstanceAddItem(): ShopItemFragment {
+            return ShopItemFragment(ADD_MODE)
+        }
+
+        fun newInstanceEditItem(shopItemId: Int): ShopItemFragment {
+            return ShopItemFragment(EDIT_MODE, shopItemId)
+        }
 
         fun newIntentAddItem(context: Context): Intent {
             val intent = Intent(context, ShopItemActivity::class.java)
