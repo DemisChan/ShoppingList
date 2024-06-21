@@ -3,12 +3,14 @@ package com.udemyAndroid.shoppinglist.presentation
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.textfield.TextInputLayout
 import com.udemyAndroid.shoppinglist.R
@@ -29,6 +31,8 @@ class ShopItemFragment : Fragment() {
     private var shopItemId: Int = ShopItem.UNDEFINED_ID
 
     override fun onCreate(savedInstanceState: Bundle?) {
+
+        Log.d("ShopItemFragment", "onCreate")
         super.onCreate(savedInstanceState)
         parseParams()
     }
@@ -70,6 +74,9 @@ class ShopItemFragment : Fragment() {
         }
         viewModel.shouldCloseScreen.observe(viewLifecycleOwner) {
             activity?.onBackPressedDispatcher
+            activity?.supportFragmentManager
+                ?.popBackStack()
+
         }
     }
 
@@ -120,8 +127,8 @@ class ShopItemFragment : Fragment() {
         }
         buttonSave.setOnClickListener {
             viewModel.editShopItem(
-                etName.text.toString(),
-                etCount.text.toString()
+                etName.text?.toString(),
+                etCount.text?.toString()
             )
         }
     }
@@ -129,8 +136,8 @@ class ShopItemFragment : Fragment() {
     private fun launchAddMode() {
         buttonSave.setOnClickListener {
             viewModel.addToShopList(
-                etName.text.toString(),
-                etCount.text.toString()
+                etName.text?.toString(),
+                etCount.text?.toString()
             )
         }
 
