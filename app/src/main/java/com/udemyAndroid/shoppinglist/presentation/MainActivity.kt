@@ -2,6 +2,7 @@ package com.udemyAndroid.shoppinglist.presentation
 
 import android.os.Bundle
 import android.util.Log
+import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
@@ -21,6 +22,16 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        val onBackPressedDispatcher = onBackPressedDispatcher
+        val callback = object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                if (supportFragmentManager.backStackEntryCount > 0) {
+                    supportFragmentManager.popBackStack("add", 0)
+                }
+            }
+        }
+        onBackPressedDispatcher.addCallback(this, callback)
+
         setContentView(R.layout.activity_main)
         shopItemContainer = findViewById(R.id.shop_item_container)
         setupRecyclerView()
@@ -35,7 +46,7 @@ class MainActivity : AppCompatActivity() {
             if (isOnePaneMode()) {
                 val intent = ShopItemActivity.newIntentAddItem(this)
                 startActivity(intent)
-            } else launchFragment(ShopItemFragment.newInstanceAddItem())
+            } else launchFragment(ShopItemFragment.newInstanceAddItem(), "add")
 
         }
 
@@ -51,11 +62,10 @@ class MainActivity : AppCompatActivity() {
         return shopItemContainer == null
     }
 
-    private fun launchFragment(fragment: Fragment) {
-        supportFragmentManager.popBackStack()
+    private fun launchFragment(fragment: Fragment, name: String) {
         supportFragmentManager.beginTransaction()
             .replace(R.id.shop_item_container, fragment)
-            .addToBackStack(null)
+            .addToBackStack(name)
             .commit()
     }
 
@@ -77,6 +87,7 @@ class MainActivity : AppCompatActivity() {
         setUpClickListener()
         setUpSwipeListener(rvShopList)
     }
+
     private fun setUpSwipeListener(rvShopList: RecyclerView?) {
         val callback = object :
             ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT or ItemTouchHelper.LEFT) {
@@ -103,8 +114,7 @@ class MainActivity : AppCompatActivity() {
             if (isOnePaneMode()) {
                 val intent = ShopItemActivity.newIntentEditItem(this, it.id)
                 startActivity(intent)
-            }
-            else launchFragment(ShopItemFragment.newInstanceEditItem(it.id))
+            } else launchFragment(ShopItemFragment.newInstanceEditItem(it.id), "edit")
 
         }
     }
