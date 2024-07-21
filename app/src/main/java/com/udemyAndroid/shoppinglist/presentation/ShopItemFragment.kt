@@ -1,5 +1,6 @@
 package com.udemyAndroid.shoppinglist.presentation
 
+import android.content.Context
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -19,6 +20,7 @@ import com.udemyAndroid.shoppinglist.domain.ShopItem
 
 class ShopItemFragment : Fragment() {
 
+    private lateinit var onEditingFinishedListener: OnEditingFinishedListener
     private lateinit var viewModel: ShopItemViewModel
 
     private lateinit var tilName: TextInputLayout
@@ -30,9 +32,16 @@ class ShopItemFragment : Fragment() {
     private var screenMode: String = MODE_UNKNOWN
     private var shopItemId: Int = ShopItem.UNDEFINED_ID
 
-    override fun onCreate(savedInstanceState: Bundle?) {
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        if(context is OnEditingFinishedListener) {
+            onEditingFinishedListener = context
+        } else {
+            throw RuntimeException("Activity must implement OnEditingFinishedListener")
+        }
+    }
 
-        Log.d("ShopItemFragment", "onCreate")
+    override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         parseParams()
     }
@@ -73,10 +82,7 @@ class ShopItemFragment : Fragment() {
             tilName.error = message
         }
         viewModel.shouldCloseScreen.observe(viewLifecycleOwner) {
-            activity?.onBackPressedDispatcher
-            activity?.supportFragmentManager
-                ?.popBackStack()
-
+            onEditingFinishedListener.onEditingFinished()
         }
     }
 
@@ -168,6 +174,10 @@ class ShopItemFragment : Fragment() {
         etName = view.findViewById(R.id.et_name)
         etCount = view.findViewById(R.id.et_count)
         buttonSave = view.findViewById(R.id.save_button)
+    }
+
+    fun interface OnEditingFinishedListener {
+        fun onEditingFinished()
     }
 
     companion object {
