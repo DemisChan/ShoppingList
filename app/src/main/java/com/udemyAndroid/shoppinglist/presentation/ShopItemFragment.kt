@@ -39,11 +39,13 @@ class ShopItemFragment : Fragment() {
         } else {
             throw RuntimeException("Activity must implement OnEditingFinishedListener")
         }
+        Log.d("ShopItemFragment", "onAttach")
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         parseParams()
+        Log.d("ShopItemFragment", "onCreate")
     }
 
     override fun onCreateView(
@@ -52,6 +54,7 @@ class ShopItemFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         arguments
+        Log.d("ShopItemFragment", "onCreateView")
         return inflater.inflate(R.layout.fragment_shop_item, container, false)
     }
 
@@ -62,6 +65,39 @@ class ShopItemFragment : Fragment() {
         addTextChangeListeners()
         launchCorrectMode()
         observeViewModel()
+        Log.d("ShopItemFragment", "onViewCreated")
+    }
+
+    override fun onStart() {
+        super.onStart()
+        Log.d("ShopItemFragment", "onStart")
+
+    }
+
+    override fun onResume() {
+        super.onResume()
+        Log.d("ShopItemFragment", "onResume")
+
+    }
+
+    override fun onStop() {
+        super.onStop()
+        Log.d("ShopItemFragment", "onStop")
+    }
+
+    override fun onPause() {
+        super.onPause()
+        Log.d("ShopItemFragment", "onPause")
+    }
+
+    override fun onDetach() {
+        super.onDetach()
+        Log.d("ShopItemFragment", "onDetach")
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        Log.d("ShopItemFragment", "onDestroy")
     }
 
     private fun observeViewModel() {

@@ -55,14 +55,6 @@ class ShopItemActivity : AppCompatActivity(), ShopItemFragment.OnEditingFinished
             shopItemId = intent.getIntExtra(EXTRA_SHOP_ITEM_ID, -1)
         }
     }
-//
-//    private fun initViews() {
-//        tilName = findViewById(R.id.til_name)
-//        tilCount = findViewById(R.id.til_count)
-//        etName = findViewById(R.id.et_name)
-//        etCount = findViewById(R.id.et_count)
-//        buttonSave = findViewById(R.id.save_button)
-//    }
 
     companion object {
         private const val EXTRA_SCREEN_MODE = "extra_mode"
