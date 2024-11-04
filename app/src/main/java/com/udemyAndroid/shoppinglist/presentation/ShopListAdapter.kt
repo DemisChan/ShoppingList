@@ -2,8 +2,12 @@ package com.udemyAndroid.shoppinglist.presentation
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.databinding.DataBindingUtil
+import androidx.databinding.ViewDataBinding
 import androidx.recyclerview.widget.ListAdapter
 import com.udemyAndroid.shoppinglist.R
+import com.udemyAndroid.shoppinglist.databinding.ItemShopDisabledBinding
+import com.udemyAndroid.shoppinglist.databinding.ItemShopEnabledBinding
 import com.udemyAndroid.shoppinglist.domain.ShopItem
 
 class ShopListAdapter : ListAdapter<ShopItem, ShopItemViewHolder>(ShopItemDiffCallback()) {
@@ -17,12 +21,9 @@ class ShopListAdapter : ListAdapter<ShopItem, ShopItemViewHolder>(ShopItemDiffCa
             DISABLED -> R.layout.item_shop_disabled
             else -> throw RuntimeException("Unknown view type")
         }
-        val view = LayoutInflater.from(parent.context).inflate(
-            layout,
-            parent,
-            false
-        )
-        return ShopItemViewHolder(view)
+        val binding = DataBindingUtil.inflate<ViewDataBinding>(
+            LayoutInflater.from(parent.context), layout, parent, false)
+        return ShopItemViewHolder(binding)
     }
 
     override fun getItemViewType(position: Int): Int {
@@ -35,15 +36,25 @@ class ShopListAdapter : ListAdapter<ShopItem, ShopItemViewHolder>(ShopItemDiffCa
 
     override fun onBindViewHolder(viewHolder: ShopItemViewHolder, position: Int) {
         val shopItem = getItem(position)
-        viewHolder.itemView.setOnLongClickListener {
+        val binding = viewHolder.binding
+        binding.root.setOnLongClickListener {
             onShopItemLongClickListener?.invoke(shopItem)
             true
         }
         viewHolder.itemView.setOnClickListener {
             onShopItemClickListener?.invoke(shopItem)
         }
-        viewHolder.tvName.text = shopItem.name
-        viewHolder.tvCount.text = shopItem.count.toString()
+        when(binding) {
+            is ItemShopDisabledBinding -> {
+                // this could be done with adding ShopItem to the layout as data binding
+                binding.tvName.text = shopItem.name
+                binding.tvCount.text = shopItem.count.toString()
+            }
+            is ItemShopEnabledBinding -> {
+                binding.tvName.text = shopItem.name
+                binding.tvCount.text = shopItem.count.toString()
+            }
+        }
     }
 
     companion object {
