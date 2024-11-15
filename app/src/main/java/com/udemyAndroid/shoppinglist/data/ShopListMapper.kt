@@ -17,7 +17,7 @@ class ShopListMapper {
         enabled = shopItemDbModel.enabled
     )
 
-    fun mapListToDbModel(list: List<ShopItemDbModel>) = list.map {
+    fun mapListDbModelToListEntity(list: List<ShopItemDbModel>) = list.map {
         mapDbModelToEntity(it)
     }
 }
