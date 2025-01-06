@@ -15,7 +15,7 @@ interface ShopListDao {
     @Upsert
     fun addShopItem(shopItemDbModel: ShopItemDbModel)
 
-    @Delete
+    @Query("DELETE FROM shop_items WHERE id = :shopItemId")
     fun deleteShopItem(shopItemId: Int)
 
     @Query("SELECT * FROM shop_items WHERE id=:shopItemId LIMIT 1")

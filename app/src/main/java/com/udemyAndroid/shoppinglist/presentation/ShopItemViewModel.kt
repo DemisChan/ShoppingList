@@ -1,5 +1,7 @@
 package com.udemyAndroid.shoppinglist.presentation
 
+import android.app.Application
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -12,9 +14,9 @@ import com.udemyAndroid.shoppinglist.domain.GetShopItemCase
 import com.udemyAndroid.shoppinglist.domain.GetShopListCase
 import com.udemyAndroid.shoppinglist.domain.ShopItem
 
-class ShopItemViewModel : ViewModel() {
+class ShopItemViewModel(application: Application) : AndroidViewModel(application) {
 
-    private val repository = ShopListRepositoryImpl
+    private val repository = ShopListRepositoryImpl(application)
 
     private val getShopItemCase = GetShopItemCase(repository)
     private val editShopListCase = EditShopListCase(repository)
@@ -42,7 +44,7 @@ class ShopItemViewModel : ViewModel() {
         val fieldsValid = validateInput(name, count)
 
         if (fieldsValid) {
-            val shopItem = ShopItem(name, count, true)
+            val shopItem = ShopItem(name = name, count = count, enabled = true)
             addToShopListCase.addShopItem(shopItem)
             finishWork()
         }
