@@ -9,3 +9,51 @@
 .externalNativeBuild
 .cxx
 local.properties
+
+.qodo
+# Android Studio / IntelliJ IDEA
+.idea/
+.idea/*
+*.iws
+*.ipr
+.idea/workspace.xml
+.idea/tasks.xml
+.idea/gradle.xml
+.idea/dictionaries
+.idea/libraries
+.idea/caches
+.idea/modules.xml
+.idea/navEditor.xml
+.idea/assetWizardSettings.xml
+
+# Gradle files
+.gradle/
+build/
+
+# Local configuration file
+
+# Generated files
+bin/
+gen/
+out/
+
+# Android Studio Navigation editor temp files
+.navigation/
+
+# Android Studio captures folder
+captures/
+
+# External native build folder
+.externalNativeBuild/
+.cxx/
+
+# Version control
+vcs.xml
+
+# OS-specific files
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db

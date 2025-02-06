@@ -1,8 +1,11 @@
 package com.udemyAndroid.shoppinglist.presentation
 
+import android.app.Application
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 // not correct data layer should not be present her but injected
 import com.udemyAndroid.shoppinglist.data.ShopListRepositoryImpl
 import com.udemyAndroid.shoppinglist.domain.AddToShopListCase
@@ -11,10 +14,14 @@ import com.udemyAndroid.shoppinglist.domain.EditShopListCase
 import com.udemyAndroid.shoppinglist.domain.GetShopItemCase
 import com.udemyAndroid.shoppinglist.domain.GetShopListCase
 import com.udemyAndroid.shoppinglist.domain.ShopItem
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.cancel
+import kotlinx.coroutines.launch
 
-class ShopItemViewModel : ViewModel() {
+class ShopItemViewModel(application: Application) : AndroidViewModel(application) {
 
-    private val repository = ShopListRepositoryImpl
+    private val repository = ShopListRepositoryImpl(application)
 
     private val getShopItemCase = GetShopItemCase(repository)
     private val editShopListCase = EditShopListCase(repository)
@@ -42,9 +49,11 @@ class ShopItemViewModel : ViewModel() {
         val fieldsValid = validateInput(name, count)
 
         if (fieldsValid) {
-            val shopItem = ShopItem(name, count, true)
-            addToShopListCase.addShopItem(shopItem)
-            finishWork()
+            viewModelScope.launch {
+                val shopItem = ShopItem(name, count, true)
+                addToShopListCase.addShopItem(shopItem)
+                finishWork()
+            }
         }
     }
 
@@ -54,17 +63,21 @@ class ShopItemViewModel : ViewModel() {
         val fieldsValid = validateInput(name, count)
 
         if (fieldsValid) {
-            _shopItem.value?.let {
-                val item = it.copy(name = name, count = count)
-                editShopListCase.editShopItem(item)
-                finishWork()
+            viewModelScope.launch {
+                _shopItem.value?.let {
+                    val item = it.copy(name = name, count = count)
+                    editShopListCase.editShopItem(item)
+                    finishWork()
+                }
             }
         }
     }
 
     fun getShopItem(shopItemId: Int) {
-        val item = getShopItemCase.getShopItem(shopItemId)
-        _shopItem.value = item
+        viewModelScope.launch {
+            val item = getShopItemCase.getShopItem(shopItemId)
+            _shopItem.value = item
+        }
     }
 
     private fun parseName(name: String?): String {
