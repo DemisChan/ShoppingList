@@ -13,6 +13,10 @@ import com.udemyAndroid.shoppinglist.domain.EditShopListCase
 import com.udemyAndroid.shoppinglist.domain.GetShopItemCase
 import com.udemyAndroid.shoppinglist.domain.GetShopListCase
 import com.udemyAndroid.shoppinglist.domain.ShopItem
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.cancel
+import kotlinx.coroutines.launch
 
 class ShopItemViewModel(application: Application) : AndroidViewModel(application) {
 
@@ -37,6 +41,7 @@ class ShopItemViewModel(application: Application) : AndroidViewModel(application
     val shouldCloseScreen: LiveData<Unit>
         get() = _shouldCloseScreen
 
+    private val scope = CoroutineScope(Dispatchers.IO)
 
     fun addToShopList(inputName: String?, inputCount: String?) {
         val name = parseName(inputName)
@@ -44,9 +49,11 @@ class ShopItemViewModel(application: Application) : AndroidViewModel(application
         val fieldsValid = validateInput(name, count)
 
         if (fieldsValid) {
-            val shopItem = ShopItem(name = name, count = count, enabled = true)
-            addToShopListCase.addShopItem(shopItem)
-            finishWork()
+            scope.launch {
+                val shopItem = ShopItem(name = name, count = count, enabled = true)
+                addToShopListCase.addShopItem(shopItem)
+                finishWork()
+            }
         }
     }
 
@@ -57,16 +64,20 @@ class ShopItemViewModel(application: Application) : AndroidViewModel(application
 
         if (fieldsValid) {
             _shopItem.value?.let {
-                val item = it.copy(name = name, count = count)
-                editShopListCase.editShopItem(item)
-                finishWork()
+                scope.launch {
+                    val item = it.copy(name = name, count = count)
+                    editShopListCase.editShopItem(item)
+                    finishWork()
+                }
             }
         }
     }
 
     fun getShopItem(shopItemId: Int) {
-        val item = getShopItemCase.getShopItem(shopItemId)
-        _shopItem.value = item
+        scope.launch {
+            val item = getShopItemCase.getShopItem(shopItemId)
+            _shopItem.postValue(item)
+        }
     }
 
     private fun parseName(name: String?): String {
@@ -100,5 +111,10 @@ class ShopItemViewModel(application: Application) : AndroidViewModel(application
 
     private fun finishWork() {
         _shouldCloseScreen.value = Unit
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        scope.cancel()
     }
 }
