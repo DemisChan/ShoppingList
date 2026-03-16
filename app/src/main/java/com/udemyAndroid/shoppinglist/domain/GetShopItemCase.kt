@@ -1,6 +1,8 @@
 package com.udemyAndroid.shoppinglist.domain
 
-class GetShopItemCase(private val shopListRepository: ShopListRepository) {
+import javax.inject.Inject
+
+class GetShopItemCase @Inject constructor(private val shopListRepository: ShopListRepository) {
 
     suspend fun getShopItem(shopItemId: Int): ShopItem {
         return shopListRepository.getShopItem(shopItemId)

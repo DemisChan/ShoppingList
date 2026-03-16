@@ -1,28 +1,26 @@
 package com.udemyAndroid.shoppinglist.presentation
 
-// not correct data layer should not be present her but injected
-import android.app.Application
-import androidx.lifecycle.AndroidViewModel
-import com.udemyAndroid.shoppinglist.data.ShopListRepositoryImpl
+import androidx.lifecycle.ViewModel
 import com.udemyAndroid.shoppinglist.domain.AddToShopListCase
 import com.udemyAndroid.shoppinglist.domain.DeleteFromShopListCase
 import com.udemyAndroid.shoppinglist.domain.EditShopListCase
 import com.udemyAndroid.shoppinglist.domain.GetShopListCase
 import com.udemyAndroid.shoppinglist.domain.ShopItem
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class MainViewModel(application: Application) : AndroidViewModel(application) {
+@HiltViewModel
+class MainViewModel @Inject constructor(
+    private val getShopListCase: GetShopListCase,
+    private val deleteShopListCase: DeleteFromShopListCase,
+    private val editShopListCase: EditShopListCase,
+    private val addToShopListCase: AddToShopListCase,
+    ) : ViewModel() {
 
-    // not correct but works
-    private val repository = ShopListRepositoryImpl(application)
-
-    private val getShopListCase = GetShopListCase(repository)
-    private val deleteShopListCase = DeleteFromShopListCase(repository)
-    private val editShopListCase = EditShopListCase(repository)
-    private val addToShopListCase = AddToShopListCase(repository)
 
     val shopList = getShopListCase.getShopList()
 

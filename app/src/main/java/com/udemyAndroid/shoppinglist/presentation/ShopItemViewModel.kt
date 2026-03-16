@@ -1,30 +1,25 @@
 package com.udemyAndroid.shoppinglist.presentation
 
-import android.app.Application
-import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-// not correct data layer should not be present her but injected
-import com.udemyAndroid.shoppinglist.data.ShopListRepositoryImpl
 import com.udemyAndroid.shoppinglist.domain.AddToShopListCase
-import com.udemyAndroid.shoppinglist.domain.DeleteFromShopListCase
 import com.udemyAndroid.shoppinglist.domain.EditShopListCase
 import com.udemyAndroid.shoppinglist.domain.GetShopItemCase
-import com.udemyAndroid.shoppinglist.domain.GetShopListCase
 import com.udemyAndroid.shoppinglist.domain.ShopItem
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class ShopItemViewModel(application: Application) : AndroidViewModel(application) {
-
-    private val repository = ShopListRepositoryImpl(application)
-
-    private val getShopItemCase = GetShopItemCase(repository)
-    private val editShopListCase = EditShopListCase(repository)
-    private val addToShopListCase = AddToShopListCase(repository)
+@HiltViewModel
+class ShopItemViewModel @Inject constructor(
+    private val getShopItemCase: GetShopItemCase,
+    private val editShopListCase: EditShopListCase,
+    private val addToShopListCase: AddToShopListCase,
+) : ViewModel() {
 
     private val _errorInputName = MutableLiveData<Boolean>()
     private val _errorInputCount = MutableLiveData<Boolean>()

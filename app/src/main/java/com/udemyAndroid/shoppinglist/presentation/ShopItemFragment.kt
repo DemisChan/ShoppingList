@@ -8,16 +8,21 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.udemyAndroid.shoppinglist.databinding.FragmentShopItemBinding
 import com.udemyAndroid.shoppinglist.domain.ShopItem
+import androidx.fragment.app.viewModels
+import androidx.fragment.app.Fragment
+
+import dagger.hilt.android.AndroidEntryPoint
+import kotlin.getValue
 
 
+@AndroidEntryPoint
 class ShopItemFragment : Fragment() {
 
     private lateinit var onEditingFinishedListener: OnEditingFinishedListener
-    private lateinit var viewModel: ShopItemViewModel
+    private val viewModel: ShopItemViewModel by viewModels()
 
     private var _binding: FragmentShopItemBinding? = null
     private val binding: FragmentShopItemBinding
@@ -56,7 +61,6 @@ class ShopItemFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel = ViewModelProvider(this)[ShopItemViewModel::class.java]
         binding.viewModel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner
         addTextChangeListeners()
