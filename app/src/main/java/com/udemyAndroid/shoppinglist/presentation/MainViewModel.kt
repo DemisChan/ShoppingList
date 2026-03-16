@@ -27,7 +27,7 @@ class MainViewModel @Inject constructor(
     private val scope = CoroutineScope(Dispatchers.IO)
 
 
-    fun deleteShopList(shopItem: ShopItem) {
+    fun deleteShopItem(shopItem: ShopItem) {
         scope.launch {
             deleteShopListCase.deleteShopItem(shopItem)
         }

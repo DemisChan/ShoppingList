@@ -1,6 +1,7 @@
 package com.udemyAndroid.shoppinglist.di
 
-import android.app.Application
+import android.content.Context
+import androidx.room.Room
 import com.udemyAndroid.shoppinglist.data.AppDatabase
 import com.udemyAndroid.shoppinglist.data.ShopListDao
 import com.udemyAndroid.shoppinglist.data.ShopListRepositoryImpl
@@ -9,6 +10,7 @@ import dagger.Binds
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
 
@@ -23,12 +25,16 @@ interface DataModule {
     companion object {
         @Provides
         @Singleton
-        fun providesDatabase(application: Application): AppDatabase {
-            return AppDatabase.getInstance(application)
+        fun provideDatabase(@ApplicationContext context: Context): AppDatabase {
+            return Room.databaseBuilder(
+                context,
+                AppDatabase::class.java,
+                "shop_item.db"
+            ).build()
+
         }
 
         @Provides
-        @Singleton
         fun provideShopListDao(appDatabase: AppDatabase): ShopListDao {
             return appDatabase.shopListDao()
         }

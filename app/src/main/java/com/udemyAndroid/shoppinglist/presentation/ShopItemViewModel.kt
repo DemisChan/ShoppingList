@@ -105,7 +105,7 @@ class ShopItemViewModel @Inject constructor(
     }
 
     private fun finishWork() {
-        _shouldCloseScreen.value = Unit
+        _shouldCloseScreen.postValue(Unit)
     }
 
     override fun onCleared() {
